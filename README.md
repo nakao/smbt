@@ -27,6 +27,8 @@ where -similarity indicates a similarity threshold of 0.8 ; index is the index b
 
 ## Usage
 
+smbt-build
+
      Usage: smbt-build [OPTION]... DATABASEFILE INDEXFILE
      
            where [OPTION]...  is a list of zero or more optional arguments
@@ -39,6 +41,8 @@ where -similarity indicates a similarity threshold of 0.8 ; index is the index b
                        (default: 1)
                  -minsup [value]: minimum number of fingerprints at each leaf
                        (default: 10)
+
+smbt-search
 
     Usage: smbt-search [OPTION]... INDEXFILE DATABASEFILE
            
