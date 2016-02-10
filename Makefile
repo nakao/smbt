@@ -28,3 +28,4 @@ check:
 	./prog/smbt-search -similarity 0.8 index.1 ./dat/fingerprints.1.dat
 	./prog/smbt-search -similarity 0.8 index.2 ./dat/fingerprints.1.dat
 	./prog/smbt-search -similarity 0.8 index.3 ./dat/fingerprints.1.dat
+	cd ruby;make demo

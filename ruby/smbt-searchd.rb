@@ -105,6 +105,8 @@ module SMBT
   # average answers:4
   # average cpu time (sec):0.040823
   # variance:nan
+  #
+  # {:query_id => 0, :num => 4, :hits => {860 => 0.950413, 902 => 0.912698, 0 => 1, 9411 => 0.802817}}
   class SearchResult
     def initialize(str)
       @similarity       = nil
@@ -157,7 +159,7 @@ end
 
 if __FILE__ == $0
   puts "=== SMBT::Server and SMBT::SearchResult ==="
-  serv = SMBT::Server.new("../prog/smbt-searchd", "../index")
+  serv = SMBT::Server.new("../prog/smbt-searchd", "../index.1")
   serv.logger.progname = "smbt-searchd.rb"
   serv.start
   queries = [{:t => 0.9, :qfname => "../dat/fingerprints.1.dat"},
@@ -170,19 +172,17 @@ if __FILE__ == $0
     p res
     puts " == End\n"
   end
-
   serv.stop
   p serv
 
-puts "\n\n==== Case: Cannot open graph file. ==="
+
+puts "\n\n=== Case: Cannot open graph file. ==="
   serv = SMBT::Server.new
   serv.smbt_searchd = "../prog/smbt-searchd"
-  serv.indexfile = "../index"
-
+  serv.indexfile = "../index.1"
   serv.start
   p serv
   p res = serv.search(0.8, "../dat/fingrpints.1.dat")
-  p serv
   serv.stop
   p serv
 
@@ -192,7 +192,7 @@ puts "\n\n==== Case: Cannot open graph file. ==="
   serv.start do |s|
     p s
     p res = s.search(0.8, "../dat/fingerprints.1.dat")
-    p res = s.search(0.8, "../dat/HOGE.1.dat")
+    p res = s.search(0.8, "../dat/cannot-open-graph-file.dat")
     p res = s.search(0.8, "../dat/fingerprints.1.dat")
   end
   p serv
