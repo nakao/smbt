@@ -9,8 +9,8 @@ smbt (1,2,3) is a software for similarity searches of fingerprints. It takes a f
 
 To compile smbt, please type the following commands:
 
-    tar -xzvf smbt-X.X.X.tar.bz2
-    cd smbt-X.X.X
+    git clone https://github.com/nakao/smbt.git
+    cd smbt
     make
 
 To make an index from your fingerprint database, the smbt-build command can be used as follows:
@@ -27,6 +27,8 @@ where -similarity indicates a similarity threshold of 0.8 ; index is the index b
 
 ## Usage
 
+smbt-build
+
      Usage: smbt-build [OPTION]... DATABASEFILE INDEXFILE
      
            where [OPTION]...  is a list of zero or more optional arguments
@@ -39,6 +41,8 @@ where -similarity indicates a similarity threshold of 0.8 ; index is the index b
                        (default: 1)
                  -minsup [value]: minimum number of fingerprints at each leaf
                        (default: 10)
+
+smbt-search
 
     Usage: smbt-search [OPTION]... INDEXFILE DATABASEFILE
            
