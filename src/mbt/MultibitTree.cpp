@@ -117,11 +117,11 @@ float MultibitTree::calcEntropy(uint64_t countOne, uint64_t countZero) {
 
 void MultibitTree::buildRangeMultibitTree(uint64_t numOne, uint64_t start, uint64_t end) {
   set<uint64_t> dims;
-  for (uint32_t i = minitem; i <= maxitem; ++i) 
+  for (uint32_t i = minitem; i <= maxitem; ++i)
     dims.insert(i);
 
   vector<uint32_t> ids;
-  for (uint32_t id = start; id <= end; ++id) 
+  for (uint32_t id = start; id <= end; ++id)
     ids.push_back(id);
 
   trees.resize(trees.size() + 1);
@@ -141,7 +141,7 @@ void MultibitTree::buildRecursive(Tree &tree, uint32_t cur, set<uint64_t> dims, 
     tree.nodes[cur].leaf = true;
     return;
   }
-  
+
   vector<uint64_t> count;
   for (size_t i = 0; i < ids.size(); ++i) {
     vector<uint32_t> &fv = fvs[ids[i]]->second;
@@ -168,7 +168,7 @@ void MultibitTree::buildRecursive(Tree &tree, uint32_t cur, set<uint64_t> dims, 
 
   vector<uint32_t> childOneIds, childZeroIds;
   for (size_t i = 0; i < ids.size(); ++i) {
-    if (binary_search(fvs[ids[i]]->second.begin(), fvs[ids[i]]->second.end(), item)) 
+    if (binary_search(fvs[ids[i]]->second.begin(), fvs[ids[i]]->second.end(), item))
       childOneIds.push_back(ids[i]);
     else
       childZeroIds.push_back(ids[i]);
@@ -270,8 +270,8 @@ void MultibitTree::searchQuery(vector<uint32_t> &qfv, float similarity, vector<p
   uint64_t query_one_num = qfv.size();
   for (size_t i = 0; i < trees.size(); ++i) {
     Tree &tree = trees[i];
-    
-    if (similarity * float(tree.cardinality) <= float(query_one_num) && float(query_one_num) <= float(tree.cardinality) / similarity) 
+
+    if (similarity * float(tree.cardinality) <= float(query_one_num) && float(query_one_num) <= float(tree.cardinality) / similarity)
       searchQueryRecursive(tree, 0, qfv, similarity, 0, 0, res);
 
     if (similarity * float(tree.cardinality) > float(query_one_num))
@@ -288,7 +288,7 @@ void MultibitTree::searchQueryRecursive(Tree &tree, uint64_t cur, vector<uint32_
   if (pruning(tree, qfv, similarity, oneColNum, zeroColNum)) {
     return;
   }
-  
+
   searchQueryRecursive(tree, tree.leftChild[cur], qfv, similarity, oneColNum, zeroColNum, res);
   searchQueryRecursive(tree, tree.rightChild[cur], qfv, similarity, oneColNum, zeroColNum, res);
 }
@@ -299,7 +299,7 @@ bool MultibitTree::pruning(Tree &tree, vector<uint32_t> &qfv, float similarity, 
   uint64_t common   = std::min(cardA - oneColNum, cardB - zeroColNum);
   return (float(common)/float(cardA + cardB - common) < similarity);
 }
- 
+
 void MultibitTree::calcSimilarity(Tree &tree, uint64_t cur, vector<uint32_t> &qfv, float similarity, vector<pair<float, uint64_t> > &res) {
   vector<uint32_t> &ids = tree.nodes[cur].ids;
   for (size_t id = 0; id < ids.size(); ++id) {
@@ -356,7 +356,7 @@ void MultibitTree::search(const char *qname, float similarity) {
     times.push_back((etime - stime)/CLOCKS_PER_SEC);
 
     cout << "query id:" << qid << " num:" << res.size() << " ";
-    for (size_t j = 0; j < res.size(); ++j) 
+    for (size_t j = 0; j < res.size(); ++j)
       cout << res[j].second << ":" << res[j].first << " ";
     cout << endl;
   }
@@ -370,16 +370,16 @@ void MultibitTree::search(const char *qname, float similarity) {
   for (size_t i = 0; i < size; ++i) {
     var += (times[i] - mean) * (times[i] - mean);
   }
-  var /= double(size - 1);
-  fprintf(stdout, "mean search time (sec):%f\n", mean);
-  fprintf(stdout, "var search time (sec):%f\n", var);
   double sum = double(totalres)/double(size);
-  fprintf(stdout, "result per query:%f\n", sum);
+  fprintf(stdout, "average answers:%f\n", sum);
+  var /= double(size - 1);
+  fprintf(stdout, "average cpu time (sec):%f\n", mean);
+  fprintf(stdout, "variance:%f\n", var);
 }
 
 void MultibitTree::printMemory() {
   double memory = 0.f;
-  for (size_t i = 0; i < trees.size(); ++i) 
+  for (size_t i = 0; i < trees.size(); ++i)
     memory += trees[i].getByte();
 
   fprintf(stdout, "multibit tree size (byte):%f\n", memory);

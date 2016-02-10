@@ -92,7 +92,7 @@ void SuccinctMultibitTreeVLA::buildRangeMultibitTree(uint64_t numOne, uint64_t s
   trees[trees.size() - 1].cardinality = numOne;
   trees[trees.size() - 1].build(components);
 
-  for (size_t i = 0; i < components.size(); ++i) 
+  for (size_t i = 0; i < components.size(); ++i)
     delete components[i];
 }
 
@@ -119,7 +119,7 @@ float SuccinctMultibitTreeVLA::calcEntropy(uint32_t numOne, uint32_t numZero) {
   float ent = 0.f;
   if (numOne != 0)
     ent += -((float(numOne)/float(numAll)) * log(float(numOne)/float(numAll)));
-  if (numZero != 0) 
+  if (numZero != 0)
     ent += -((float(numZero)/float(numAll)) * log(float(numZero)/float(numAll)));
 
   return ent;
@@ -151,7 +151,7 @@ void SuccinctMultibitTreeVLA::calcSplitItem(vector<uint32_t> &ids, set<uint32_t>
       maxEnt = currentEnt;
       item = *it;
     }
-    if (maxEnt >= 0.95) 
+    if (maxEnt >= 0.95)
       break;
   }
 
@@ -189,7 +189,7 @@ void SuccinctMultibitTreeVLA::calcDominantItems(set<uint32_t> &items, vector<uin
 void SuccinctMultibitTreeVLA::splitData(uint32_t item, vector<uint32_t> &ids, vector<uint32_t> &oneIds, vector<uint32_t> &zeroIds) {
   for (size_t i = 0; i < ids.size(); ++i)  {
     vector<uint32_t> &fv = fvs[ids[i]]->second;
-    if (binary_search(fv.begin(), fv.end(), item)) 
+    if (binary_search(fv.begin(), fv.end(), item))
       oneIds.push_back(ids[i]);
     else
       zeroIds.push_back(ids[i]);
@@ -227,7 +227,7 @@ void SuccinctMultibitTreeVLA::buildMultibitTreeRecursive(uint32_t depth, vector<
   vector<uint32_t> &zeroCols = components[components.size() - 1]->zeroCols;
   vector<uint32_t> deleteItems;
   calcDominantItems(items, ids, oneCols, zeroCols, deleteItems);
-  for (size_t i = 0; i < deleteItems.size(); ++i) 
+  for (size_t i = 0; i < deleteItems.size(); ++i)
     items.erase(deleteItems[i]);
   deleteItems.clear();
 
@@ -242,7 +242,7 @@ void SuccinctMultibitTreeVLA::save(ofstream &os) {
   {
     size_t size = trees.size();
     os.write((const char*)(&size), sizeof(size_t));
-    for (size_t i = 0; i < size; ++i) 
+    for (size_t i = 0; i < size; ++i)
       trees[i].save(os);
   }
   {
@@ -353,7 +353,7 @@ float SuccinctMultibitTreeVLA::jaccardSim(uint32_t id, const vector<uint32_t> &q
   size_t i = 0, j = 0;
   size_t size1 = items.getSize();
   size_t size2 = qfv.size();
-  uint64_t val = items.get(i); 
+  uint64_t val = items.get(i);
   while (i < size1 && j < size2) {
     if      (val < qfv[j])  {
       if (++i < size1)
@@ -377,7 +377,7 @@ void SuccinctMultibitTreeVLA::calcSimilarity(Tree &tree, uint64_t cur, vector<ui
   float sim = 0.f;
 
   for (size_t id = 0; id < ids.size(); ++id) {
-    if ((sim = jaccardSim(ids[id], qfv)) >= similarity)  
+    if ((sim = jaccardSim(ids[id], qfv)) >= similarity)
       res.push_back(make_pair(sim, itemset[ids[id]].first));
   }
 }
@@ -407,7 +407,7 @@ void SuccinctMultibitTreeVLA::searchQuery(vector<uint32_t> &qfv, vector<pair<flo
     }
     if (similarity * float(cardinality) > float(queryOneNum))
       break;
-    
+
   }
 }
 
@@ -455,7 +455,7 @@ void SuccinctMultibitTreeVLA::search(const char *qname, float _sim) {
   var = sqrt(var);
 
   cout << "average answers:" << double(totalNum)/double(qfvs.size()) << endl;
-  cout << "mean time (sec):" << mean << endl;
+  cout << "average cpu time (sec):" << mean << endl;
   cout << "variance:" << var << endl;
 }
 }

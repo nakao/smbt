@@ -53,26 +53,31 @@ int main(int argc, char **argv) {
     SMBTTRIE::SuccinctMultibitTreeTRIE mbt;
     mbt.load(ifs);
     ifs.close();
+
     mbt.search(qfname, similarity);
   }
   else if (mode == 2) {
     SMBTVLA::SuccinctMultibitTreeVLA mbt;
     mbt.load(ifs);
     ifs.close();
+
     mbt.search(qfname, similarity);
   }
   else if (mode == 3) {
     MBT::MultibitTree mbt;
     mbt.load(ifs);
     ifs.close();
+
     mbt.search(qfname, similarity);
   }
   else {
     cerr << "mode should be 1 or 2 or 3." << endl;
     return 0;
   }
+
   return 0;
 }
+
 
 void version() {
   std::cerr << "Succinct Multibit Tree version 0.0.1" << std::endl
@@ -81,9 +86,9 @@ void version() {
 
 void usage(){
   std::cerr << std::endl
-       << "Usage: mbt-search [OPTION]... INDEXFILE DATABASEFILE" << std::endl << std::endl
+       << "Usage: smbt-search [OPTION]... INDEXFILE DATABASEFILE" << std::endl << std::endl
        << "       where [OPTION]...  is a list of zero or more optional arguments" << std::endl
-       << "             INDEXFILE     is the name of an indexfile" << std::endl 
+       << "             INDEXFILE     is the name of an indexfile" << std::endl
        << "             DATABASEFILE  is the name of a graph database" << std::endl << std::endl
        << "Additional arguments (input and output files may be specified):" << std::endl
        << "       -similarity [value]: threshold of Jaccard-Tanimoto similarity" << std::endl
